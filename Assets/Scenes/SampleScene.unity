@@ -321,7 +321,7 @@ Animator:
   m_GameObject: {fileID: 429757301}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f9d8cd13a023c5046a1621b76023dad1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -426,6 +426,7 @@ MonoBehaviour:
   moveForce: 10
   jumpForce: 11
   movementX: 0
+  movementY: 0
   myBody: {fileID: 0}
 --- !u!1 &519420028
 GameObject:

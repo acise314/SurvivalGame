@@ -17,23 +17,8 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerMoveKeyboard();
     }
     
-    void PlayerMoveKeyboard(){
-        mainCharacter.movementX=Input.GetAxis("Horizontal");
-        Debug.Log("move X value is: " + mainCharacter.movementX);    
-        mainCharacter.movementY=Input.GetAxis("Vertical");
-        Debug.Log("move X value is: " + mainCharacter.movementY);    
-
-
-
-
-
-    Vector2 movement = new Vector2(mainCharacter.movementX * mainCharacter.moveForce, mainCharacter.movementY * mainCharacter.moveForce);
-    mainCharacter.myBody.velocity = movement;
-
-    }
 
   
 }
