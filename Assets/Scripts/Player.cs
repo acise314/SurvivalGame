@@ -5,9 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public float moveForce = 10f;
+    public float moveForce = 5f;
     public float jumpForce = 11f;
     public float movementX;
+        public float movementY;
+
     public Rigidbody2D myBody;
     private SpriteRenderer sr;
     private Animator anim;
