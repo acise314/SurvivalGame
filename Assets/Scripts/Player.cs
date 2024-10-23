@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player
 {
 
     public float moveForce = 5f;
@@ -23,14 +23,14 @@ public class Player : MonoBehaviour
     public Vector2 lookDirection;
     float lookAngle;
 
-
-    void Awake()
+    public Player(Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePt)
     {
-        this.myBody = GetComponent<Rigidbody2D>();
-        this.anim = GetComponent<Animator>();
-        this.sr = GetComponent<SpriteRenderer>();
-        this.anim.speed = 0;
-
+        this.myBody = body;
+        this.anim = animator;
+        this.sr = spriteRenderer;
+        this.bulletPrefab = bullet;
+        this.firePoint = firePt;
+        anim.speed = 0;
     }
     public void AnimatePlayer()
     {
@@ -47,32 +47,20 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        PlayerMoveKeyboard();
-        BulletShoot();
-
-    }
-    void BulletShoot()
+    public void BulletShoot()
     {
         lookDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         lookAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
         firePoint.rotation = Quaternion.Euler(0, 0, lookAngle);
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            GameObject bullet = UnityEngine.Object.Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = firePoint.right * bulletSpeed;
         }
 
     }
-    void PlayerMoveKeyboard()
+    public void PlayerMoveKeyboard()
     {
         this.movementX = Input.GetAxis("Horizontal");
         Debug.Log("move X value is: " + this.movementX);
@@ -101,9 +89,9 @@ public class Player : MonoBehaviour
     void FlipCharacter(bool faceRight)
     {
         facingRight = faceRight;
-        Vector3 localScale = transform.localScale;
+        Vector2 localScale = sr.transform.localScale;
         localScale.x = faceRight ? 1 : -1;
-        transform.localScale = localScale;
+        sr.transform.localScale = localScale;
     }
 
 }
