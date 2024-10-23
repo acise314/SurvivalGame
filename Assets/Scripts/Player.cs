@@ -5,7 +5,10 @@ using UnityEngine;
 public class Player
 {
 
-    public float moveForce = 5f;
+    public int health = 10;
+    public float moveForce = 5f; // Speed
+    public float damage = 5f;
+    public int numBullets = 1;
     public float jumpForce = 11f;
     public float movementX;
     public float movementY;
@@ -17,13 +20,23 @@ public class Player
     private bool facingRight = true;
 
     public GameObject bulletPrefab;
-    public int numBullets = 1;
+    private GameObject _hearts;
     public float bulletSpeed = 10f;
     public Transform firePoint;
     public Vector2 lookDirection;
     float lookAngle;
 
-    public Player(Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePt)
+    float heartLocation = 4.5f;
+
+    void ShowHearts(){
+        for (int i = 0; i < health; i++){
+            Vector2 heartPosition = new Vector2(-heartLocation + (0.3f * i), heartLocation); 
+
+            GameObject heart = UnityEngine.Object.Instantiate(_hearts, heartPosition, Quaternion.identity);
+        }
+    }
+
+    public Player(Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePt, GameObject hearts)
     {
         this.myBody = body;
         this.anim = animator;
@@ -31,10 +44,11 @@ public class Player
         this.bulletPrefab = bullet;
         this.firePoint = firePt;
         anim.speed = 0;
+        this._hearts = hearts;
     }
     public void AnimatePlayer()
     {
-
+        ShowHearts();
         if (this.movementX != 0 || this.movementY != 0)
         {
             anim.SetBool(RUN_ANIMATION, true);

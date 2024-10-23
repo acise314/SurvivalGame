@@ -136,11 +136,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3294510781233779344, guid: af8005c224eeb7549ac4b70126f5598c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.39
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3294510781233779344, guid: af8005c224eeb7549ac4b70126f5598c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3294510781233779344, guid: af8005c224eeb7549ac4b70126f5598c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -219,6 +219,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 429757305}
   bulletPrefab: {fileID: 2342619237560764643, guid: b7de8462f3dd1cf46b81da8cac339793, type: 3}
   firePoint: {fileID: 1451842558}
+  hearts: {fileID: 7629046066097787498, guid: 4de3c2395c06ea443bb13987539c0ce5, type: 3}
 --- !u!60 &429757303
 PolygonCollider2D:
   m_ObjectHideFlags: 0
