@@ -226,6 +226,8 @@ MonoBehaviour:
   firePoint: {fileID: 7276547722205980957}
   hearts: {fileID: 7629046066097787498, guid: 4de3c2395c06ea443bb13987539c0ce5, type: 3}
   pointer: {fileID: 0}
+  playerTransform: {fileID: 0}
+  info: {fileID: 0}
 --- !u!50 &8912891209201678706
 Rigidbody2D:
   serializedVersion: 4
