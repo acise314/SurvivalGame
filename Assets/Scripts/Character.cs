@@ -19,9 +19,7 @@ public class Character : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mainCharacter = new Player(playerTransform, body, animator, spriteRenderer, bulletPrefab, firePoint, hearts, pointer);
-
-
+        mainCharacter = new Player(this, playerTransform, body, animator, spriteRenderer, bulletPrefab, firePoint, hearts, pointer);
     }
 
     // Update is called once per frame
