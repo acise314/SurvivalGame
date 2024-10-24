@@ -1,3 +1,4 @@
+// smt from b1, b2
 
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ public class Player
     private KeyCode _spinKeyClockwise = KeyCode.J;
     private KeyCode _shootKey = KeyCode.K;
     private KeyCode _spinKeyCounterClockwise = KeyCode.L;
-
+    private List<GameObject> _heartsInstances = new List<GameObject>();
+    private int _maxHealth = 10;
     private float _movementX;
     private float _movementY;
     private float _bulletSpeed = 10f;
@@ -67,7 +69,7 @@ public class Player
 
     public double GetSpeed()
     {
-        return (double) _moveForce;
+        return (double)_moveForce;
     }
     public double GetDamage()
     {
@@ -78,17 +80,22 @@ public class Player
         return _score;
     }
 
-    public void SetSpeed(float speed)
+    public void changeSpeed(float speed)
     {
         _moveForce = speed;
     }
-    public void SetDamage(float damage)
+    public void changeDamage(float damage)
     {
         _damage = damage;
     }
-    public void IncreaseScore(int points)
+    public void changeScore(int score)
     {
-        _score += points;
+        _score += score;
+    }
+    public void changeHealth(int health)
+    {
+        _health = (int) Mathf.Clamp((float) _health+ health, (float) 0f, (float) _maxHealth);
+        showHearts();
     }
     public void FrameChange()
     {
@@ -97,24 +104,21 @@ public class Player
         spin();
     }
 
-    public void AddHealth(int amount)
-    {
-        _health += amount;
-        showHearts();
-    }
-
-    public void AddDamage(float amount)
-    {
-        _damage += amount;
-    }
-
     private void showHearts()
     {
+        foreach (GameObject heart in _heartsInstances)
+        {
+            UnityEngine.Object.Destroy(heart); 
+        }
+        _heartsInstances.Clear(); 
+
+        
         for (int i = 0; i < this._health; i++)
         {
             Vector2 heartPosition = new Vector2(-this._heartLocation + (0.3f * i), this._heartLocation);
             GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity, this._playerTransform);
-            //  heart.transform.SetParent(this._playerTransform, false);
+            _heartsInstances.Add(heart); 
+                                        
         }
     }
 

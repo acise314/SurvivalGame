@@ -26,10 +26,10 @@ public class Powerup : MonoBehaviour
         switch (powerupType)
         {
             case PowerupType.Health:
-                player.AddHealth(healthAmount);
+                player.changeHealth(healthAmount);
                 break;
             case PowerupType.Damage:
-                player.AddDamage(damageAmount);
+                player.changeDamage(damageAmount);
                 break;
         }
     }
