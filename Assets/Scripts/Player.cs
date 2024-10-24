@@ -1,4 +1,3 @@
-// smt from b1, b2; getters and setters
 
 using System.Collections;
 using System.Collections.Generic;
@@ -11,9 +10,7 @@ public class Player
     private Animator _anim;
     private GameObject _bulletPrefab;
     private GameObject _hearts;
-    private GameObject _pointer;
     private Transform _firePoint;
-
     private int _health = 10;
 
     private float _moveforce = 5f; // same as speed
@@ -27,8 +24,6 @@ public class Player
     private float _movementX;
     private float _movementY;
     private float _bulletSpeed = 10f;
-    private Vector2 _lookDirection;
-    private float _lookAngle;
 
     private const string RUN_ANIMATION = "Move";
     private bool _facingRight = true;
@@ -76,12 +71,22 @@ public class Player
     }
     public void FrameChange()
     {
-        playerMoveKeyboard();
-        bulletShoot();
-        spin();
-
+        PlayerMoveKeyboard();
+        BulletShoot();
     }
-    private void showHearts()
+
+    public void AddHealth(int amount)
+    {
+        _health += amount;
+        ShowHearts();
+    }
+
+    public void AddDamage(float amount)
+    {
+        _damage += amount;
+    }
+
+    private void ShowHearts()
     {
         for (int i = 0; i < this._health; i++)
         {
@@ -90,23 +95,29 @@ public class Player
         }
     }
 
-    private void animatePlayer()
+    private void PlayerMoveKeyboard()
     {
-        if (this._movementX != 0 || this._movementY != 0)
+        float movementX = Input.GetAxis("Horizontal");
+        float movementY = Input.GetAxis("Vertical");
+
+        Vector2 movement = new Vector2(movementX * this._moveForce, movementY * this._moveForce);
+        this._myBody.velocity = movement;
+
+        if (movementX < 0)
         {
-            this._anim.SetBool(RUN_ANIMATION, true);
-            this._anim.speed = 0.75f;
+            FlipCharacter(false);
         }
-        else
+        else if (movementX > 0)
         {
-            this._anim.SetBool(RUN_ANIMATION, false);
-            this._anim.speed = 0;
+            FlipCharacter(true);
         }
+
+        _anim.SetBool(RUN_ANIMATION, movementX != 0 || movementY != 0);
     }
 
-    private void bulletShoot()
+    private void BulletShoot()
     {
-        if (Input.GetKeyDown(this._shootKey))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             GameObject bullet = UnityEngine.Object.Instantiate(this._bulletPrefab, this._firePoint.position, this._firePoint.rotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
@@ -115,54 +126,12 @@ public class Player
         }
     }
 
-    private void playerMoveKeyboard()
+    private void FlipCharacter(bool faceRight)
     {
-        spin();
-        this._movementX = Input.GetAxis("Horizontal");
-        Debug.Log("move X value is: " + this._movementX);
-        if (this._movementX < 0)
+        if (_facingRight != faceRight)
         {
-            flipCharacter(false);
+            _sr.flipX = !_sr.flipX;
         }
-        else if (this._movementX > 0)
-        {
-            flipCharacter(true);
-        }
-        this._movementY = Input.GetAxis("Vertical");
-        Debug.Log("move Y value is: " + this._movementY);
-
-        animatePlayer();
-
-        Vector2 movement = new Vector2(this._movementX * this._moveforce, this._movementY * this._moveforce);
-        this._myBody.velocity = movement;
-    }
-
-    private void flipCharacter(bool faceRight)
-    {
-        if (this._facingRight != faceRight)
-        {
-            this._sr.flipX = !this._sr.flipX;
-        }
-        this._facingRight = faceRight;
-    }
-
-    private void spin()
-    {
-        if (Input.GetKey(this._spinKeyClockwise))
-        {
-            this._firePoint.Rotate(0, 0, this._rotationSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(this._spinKeyCounterClockwise))
-        {
-            this._firePoint.Rotate(0, 0, -1 * this._rotationSpeed * Time.deltaTime);
-        }
-        updatePointer();
-    }
-
-    private void updatePointer()
-    {
-        this._pointer.transform.position = this._firePoint.position;
-        float angle = this._firePoint.eulerAngles.z - 45.0f;
-        this._pointer.transform.rotation = Quaternion.Euler(0, 0, angle);
+        _facingRight = faceRight;
     }
 }
