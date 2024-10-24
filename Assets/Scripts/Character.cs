@@ -14,11 +14,12 @@ public class Character : MonoBehaviour
     public Transform firePoint;
     public GameObject hearts;
     public GameObject pointer;
+    public Transform playerTransform;
 
     // Start is called before the first frame update
     void Start()
     {
-        mainCharacter = new Player(body, animator, spriteRenderer, bulletPrefab, firePoint, hearts, pointer);
+        mainCharacter = new Player(playerTransform, body, animator, spriteRenderer, bulletPrefab, firePoint, hearts, pointer);
 
 
     }

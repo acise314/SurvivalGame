@@ -31,8 +31,9 @@ public class Player
     private const string RUN_ANIMATION = "Move";
     private bool _facingRight = true;
     private float _heartLocation = 4.5f;
+    private Transform _playerTransform;
 
-    public Player(Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject hearts, GameObject pointer)
+    public Player(Transform playerTransform, Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject hearts, GameObject pointer)
     {
         this._myBody = body;
         this._anim = animator;
@@ -41,8 +42,10 @@ public class Player
         this._firePoint = firePoint;
         this._hearts = hearts;
         this._pointer = pointer;
-
+        this._playerTransform = playerTransform;
         this._anim.speed = 0; // Initialize animator speed
+        showHearts();
+
     }
 
     public void FrameChange()
@@ -58,12 +61,12 @@ public class Player
         {
             Vector2 heartPosition = new Vector2(-this._heartLocation + (0.3f * i), this._heartLocation);
             GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity);
+            heart.transform.SetParent(this._playerTransform);
         }
     }
 
     private void animatePlayer()
     {
-        showHearts();
         if (this._movementX != 0 || this._movementY != 0)
         {
             this._anim.SetBool(RUN_ANIMATION, true);
