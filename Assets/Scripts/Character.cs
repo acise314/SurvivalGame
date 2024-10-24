@@ -13,11 +13,12 @@ public class Character : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     public GameObject hearts;
+    public GameObject pointer;
 
     // Start is called before the first frame update
     void Start()
     {
-        mainCharacter = new Player(body, animator, spriteRenderer, bulletPrefab, firePoint, hearts);
+        mainCharacter = new Player(body, animator, spriteRenderer, bulletPrefab, firePoint, hearts, pointer);
 
 
     }
@@ -25,9 +26,7 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        mainCharacter.PlayerMoveKeyboard();
-        mainCharacter.BulletShoot();
-
+        mainCharacter.FrameChange();
     }
     
 
