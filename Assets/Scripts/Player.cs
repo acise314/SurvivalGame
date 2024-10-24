@@ -1,4 +1,4 @@
-// smt from b1, b2
+// smt from b1, b2; getters and setters
 
 using System.Collections;
 using System.Collections.Generic;
@@ -15,10 +15,10 @@ public class Player
     private Transform _firePoint;
 
     private int _health = 10;
+
     private float _moveforce = 5f; // same as speed
     private float _damage = 5f;
-    private int _numBullets = 1;
-    private float _jumpForce = 11f;
+    private int _score = 0;
     private float _rotationSpeed = 100f;
     private KeyCode _spinKeyClockwise = KeyCode.J;
     private KeyCode _shootKey = KeyCode.K;
@@ -34,10 +34,7 @@ public class Player
     private bool _facingRight = true;
     private float _heartLocation = 4.5f;
     private Transform _playerTransform;
-
-    private MonoBehaviour _character;
-
-    public Player(MonoBehaviour character, Transform playerTransform, Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject heart, GameObject pointer)
+    public Player(Transform playerTransform, Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject heart, GameObject pointer)
     {
         this._myBody = body;
         this._anim = animator;
@@ -47,12 +44,36 @@ public class Player
         this._hearts = heart;
         this._pointer = pointer;
         this._playerTransform = playerTransform;
-        this._anim.speed = 0; 
-        this._character = character;
+        this._anim.speed = 0;
         showHearts();
 
     }
 
+    public double GetSpeed()
+    {
+        return (double)_moveforce;
+    }
+    public double GetDamage()
+    {
+        return (double)_damage;
+    }
+    public int GetScore()
+    {
+        return _score;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _moveforce = speed;
+    }
+    public void SetDamage(float damage)
+    {
+        _damage = damage;
+    }
+    public void IncreaseScore(int points)
+    {
+        _score += points;
+    }
     public void FrameChange()
     {
         playerMoveKeyboard();
@@ -66,7 +87,6 @@ public class Player
         {
             Vector2 heartPosition = new Vector2(-this._heartLocation + (0.3f * i), this._heartLocation);
             GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity, this._playerTransform);
-          //  heart.transform.SetParent(this._playerTransform, false);
         }
     }
 
