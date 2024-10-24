@@ -33,17 +33,20 @@ public class Player
     private float _heartLocation = 4.5f;
     private Transform _playerTransform;
 
-    public Player(Transform playerTransform, Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject hearts, GameObject pointer)
+    private MonoBehaviour _character;
+
+    public Player(MonoBehaviour character, Transform playerTransform, Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject heart, GameObject pointer)
     {
         this._myBody = body;
         this._anim = animator;
         this._sr = spriteRenderer;
         this._bulletPrefab = bullet;
         this._firePoint = firePoint;
-        this._hearts = hearts;
+        this._hearts = heart;
         this._pointer = pointer;
         this._playerTransform = playerTransform;
-        this._anim.speed = 0; // Initialize animator speed
+        this._anim.speed = 0; 
+        this._character = character;
         showHearts();
 
     }
@@ -60,8 +63,8 @@ public class Player
         for (int i = 0; i < this._health; i++)
         {
             Vector2 heartPosition = new Vector2(-this._heartLocation + (0.3f * i), this._heartLocation);
-            GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity);
-            heart.transform.SetParent(this._playerTransform);
+            GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity, this._playerTransform);
+          //  heart.transform.SetParent(this._playerTransform, false);
         }
     }
 
@@ -86,6 +89,7 @@ public class Player
             GameObject bullet = UnityEngine.Object.Instantiate(this._bulletPrefab, this._firePoint.position, this._firePoint.rotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = this._firePoint.right * this._bulletSpeed;
+            UnityEngine.Object.Destroy(bullet, 5f);
         }
     }
 
