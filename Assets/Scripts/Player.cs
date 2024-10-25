@@ -124,22 +124,22 @@ public class Player
 
     private void playerMoveKeyboard()
     {
-        float movementX = Input.GetAxis("Horizontal");
-        float movementY = Input.GetAxis("Vertical");
+        _movementX = Input.GetAxis("Horizontal");
+        _movementY = Input.GetAxis("Vertical");
 
-        Vector2 movement = new Vector2(movementX * this._moveForce, movementY * this._moveForce);
+        Vector2 movement = new Vector2(_movementX * this._moveForce, _movementY * this._moveForce);
         this._myBody.velocity = movement;
 
-        if (movementX < 0)
+        if (_movementX < 0)
         {
             FlipCharacter(false);
         }
-        else if (movementX > 0)
+        else if (_movementX > 0)
         {
             FlipCharacter(true);
         }
 
-        _anim.SetBool(RUN_ANIMATION, movementX != 0 || movementY != 0);
+        animatePlayer();
     }
 
     private void bulletShoot()
