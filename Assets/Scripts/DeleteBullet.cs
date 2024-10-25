@@ -20,7 +20,7 @@ public class DeleteBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("enemy"))
         {
-            Destroy(gameObject);
+            UnityEngine.Object.Destroy(collision.gameObject);
         }
     }
 }
