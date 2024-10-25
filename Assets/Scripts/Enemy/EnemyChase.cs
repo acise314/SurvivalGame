@@ -25,7 +25,7 @@ public class EnemyChase : MonoBehaviour
     void Update()
     {
         Swarm();
-        if (currentHealth <= 0)
+        if (currentHealth < 0)
         {
             Destroy(gameObject);
         }
