@@ -95,8 +95,12 @@ public class Player
     }
     public void changeHealth(int health)
     {
-        _health = (int) Mathf.Clamp((float) _health+ health, (float) 0f, (float) _maxHealth);
+        _health = (int)Mathf.Clamp((float)_health + health, (float)0f, (float)_maxHealth);
         showHearts();
+    }
+    public int getHealth()
+    {
+        return _health;
     }
     public void FrameChange()
     {
@@ -109,20 +113,22 @@ public class Player
     {
         foreach (GameObject heart in _heartsInstances)
         {
-            UnityEngine.Object.Destroy(heart); 
+            UnityEngine.Object.Destroy(heart);
         }
-        _heartsInstances.Clear(); 
+        _heartsInstances.Clear();
 
-        
         for (int i = 0; i < this._health; i++)
         {
-            Vector2 heartPosition = new Vector2(-this._heartLocation + (0.3f * i), this._heartLocation);
+            Vector2 heartPosition = new Vector2(
+                _playerTransform.position.x - this._heartLocation + (0.3f * i),
+                _playerTransform.position.y + this._heartLocation
+            );
             GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity, this._playerTransform);
-            _heartsInstances.Add(heart); 
-                                        
+            _heartsInstances.Add(heart);
+
         }
     }
-    
+
 
     private void playerMoveKeyboard()
     {
