@@ -1,7 +1,33 @@
 using UnityEngine;
 
+// Class for managing power-up counts
+public class rune
+{
+    private int _taken;
+
+    public rune(int taken)
+    {
+        this._taken = taken;
+    }
+
+    public int GetTaken()
+    {
+        return this._taken;
+    }
+
+    public void SetTaken(int newTaken)
+    {
+        this._taken = newTaken;
+    }
+}
+
 public class PowerUp : MonoBehaviour
 {
+    // Declare instances of rune for counting power-ups taken
+    private static rune health = new rune(0);
+    private static rune damage = new rune(0);
+    private static rune speed = new rune(0);
+
     public enum PowerUpType
     {
         Health,
@@ -11,11 +37,6 @@ public class PowerUp : MonoBehaviour
 
     [SerializeField] private PowerUpType powerUpType; // The type of power-up
     private float _spawnProbability; // Spawn probability for the power-up
-
-    // Encapsulated properties for power-ups taken
-    private static int _healthPowerUpsTaken;
-    private static int _damagePowerUpsTaken;
-    private static int _speedPowerUpsTaken;
 
     // Constructor to set spawn probability
     public PowerUp(float spawnProbability)
@@ -34,55 +55,27 @@ public class PowerUp : MonoBehaviour
         _spawnProbability = spawnProbability;
     }
 
-    // Properties for accessing the power-up counts
-    public int GetHealthPowerUpsTaken()
-    {
-        return _healthPowerUpsTaken;
-    }
-
-    protected void SetHealthPowerUpsTaken(int value)
-    {
-        _healthPowerUpsTaken = value;
-    }
-
-    public int GetDamagePowerUpsTaken()
-    {
-        return _damagePowerUpsTaken;
-    }
-
-    protected void SetDamagePowerUpsTaken(int value)
-    {
-        _damagePowerUpsTaken = value;
-    }
-
-    public int GetSpeedPowerUpsTaken()
-    {
-        return _speedPowerUpsTaken;
-    }
-
-    protected void SetSpeedPowerUpsTaken(int value)
-    {
-        _speedPowerUpsTaken = value;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
+    // OnTriggerEnter2D method to handle power-up collection
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             switch (powerUpType)
             {
                 case PowerUpType.Health:
-                    SetHealthPowerUpsTaken(GetHealthPowerUpsTaken() + 1);
+                    health.SetTaken(health.GetTaken() + 1); // Increment health power-ups taken
                     // Implement health increase logic here
+                    Debug.Log(health.GetTaken());
                     break;
 
                 case PowerUpType.Damage:
-                    SetDamagePowerUpsTaken(GetDamagePowerUpsTaken() + 1);
+                    damage.SetTaken(damage.GetTaken() + 1); // Increment damage power-ups taken
                     // Implement damage increase logic here
+                    Debug.Log(damage.GetTaken());
                     break;
 
                 case PowerUpType.Speed:
-                    SetSpeedPowerUpsTaken(GetSpeedPowerUpsTaken() + 1);
+                    speed.SetTaken(speed.GetTaken() + 1); // Increment speed power-ups taken
                     // Implement speed increase logic here
                     break;
             }
