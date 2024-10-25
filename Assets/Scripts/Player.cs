@@ -86,11 +86,17 @@ public class Player
     }
     public void changeDamage(float damage)
     {
-        _damage = damage;
+        _damage += damage;
     }
+
+
+
     public void changeScore(int score)
     {
         _score += score;
+    }
+    public int getHealth(){
+        return _health;
     }
     public void changeHealth(int health)
     {
