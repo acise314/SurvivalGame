@@ -1,52 +1,28 @@
-using System.Collections;
-using UnityEngine;
-
-public class PowerUpSpawner : MonoBehaviour
+public class rune
 {
-    public GameObject healthPowerUpPrefab;
-    public GameObject damagePowerUpPrefab;
-    public GameObject speedPowerUpPrefab;
+    private int _taken; // a counter for how many of this type of powerup is taken
+    private int _increase; // a value that the powerup increases something by
+    private string _name;
 
-    public float spawnRadius = 10f; // Distance from player to spawn power-ups
-    public float spawnInterval = 5f; // Time between spawns
-
-    private void Start()
+    public rune(string name, int taken, int increase)
     {
-        StartCoroutine(SpawnPowerUps());
+        this._taken = taken;
+        this._name = name;
+        this._increase = increase;
     }
 
-    private IEnumerator SpawnPowerUps()
+    public int GetTaken()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(spawnInterval);
-
-            // Randomly choose a power-up type to spawn
-            GameObject powerUpPrefab = ChooseRandomPowerUp();
-            Vector2 spawnPosition = (Vector2)transform.position + Random.insideUnitCircle * spawnRadius;
-
-            Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
-        }
+        return this._taken;
     }
 
-    private GameObject ChooseRandomPowerUp()
+    public void SetTaken(int newTaken)
     {
-        float healthSpawnChance = 0.45f; // 45% chance for health
-        float damageSpawnChance = 0.45f; // 45% chance for damage
-        float speedSpawnChance = 0.10f; // 10% chance for speed (rarer)
+        this._taken = newTaken;
+    }
 
-        float randomValue = Random.Range(0f, 1f);
-        if (randomValue < healthSpawnChance)
-        {
-            return healthPowerUpPrefab;
-        }
-        else if (randomValue < healthSpawnChance + damageSpawnChance)
-        {
-            return damagePowerUpPrefab;
-        }
-        else
-        {
-            return speedPowerUpPrefab;
-        }
+    public int GetIncrease()
+    {
+        return this._increase;
     }
 }

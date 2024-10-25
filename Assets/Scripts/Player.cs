@@ -1,5 +1,3 @@
-// smt from b1, b2
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +31,7 @@ public class Player
     private bool _facingRight = true;
     private float _heartLocation = 4.5f;
     private Transform _playerTransform;
+
     public Player(Transform playerTransform, Rigidbody2D body, Animator animator, SpriteRenderer spriteRenderer, GameObject bullet, Transform firePoint, GameObject heart, GameObject pointer)
     {
         this._myBody = body;
@@ -45,8 +44,8 @@ public class Player
         this._playerTransform = playerTransform;
         this._anim.speed = 0;
         showHearts();
-
     }
+
     private void spin()
     {
         if (Input.GetKey(this._spinKeyClockwise))
@@ -71,10 +70,12 @@ public class Player
     {
         return (double)_moveForce;
     }
+
     public double GetDamage()
     {
         return (double)_damage;
     }
+
     public int GetScore()
     {
         return _score;
@@ -82,27 +83,30 @@ public class Player
 
     public void changeSpeed(float speed)
     {
-        _moveForce = speed;
+        _moveForce += speed; // Increased by the value passed
     }
+
     public void changeDamage(float damage)
     {
-        _damage += damage;
+        _damage += damage; // Increased by the value passed
     }
-
-
 
     public void changeScore(int score)
     {
         _score += score;
     }
-    public int getHealth(){
+
+    public int getHealth()
+    {
         return _health;
     }
+
     public void changeHealth(int health)
     {
-        _health = (int) Mathf.Clamp((float) _health+ health, (float) 0f, (float) _maxHealth);
+        _health = (int)Mathf.Clamp((float)_health + health, 0f, (float)_maxHealth);
         showHearts();
     }
+
     public void FrameChange()
     {
         playerMoveKeyboard();
@@ -114,17 +118,15 @@ public class Player
     {
         foreach (GameObject heart in _heartsInstances)
         {
-            UnityEngine.Object.Destroy(heart); 
+            UnityEngine.Object.Destroy(heart);
         }
-        _heartsInstances.Clear(); 
+        _heartsInstances.Clear();
 
-        
         for (int i = 0; i < this._health; i++)
         {
             Vector2 heartPosition = new Vector2(-this._heartLocation + (0.3f * i), this._heartLocation);
             GameObject heart = UnityEngine.Object.Instantiate(this._hearts, heartPosition, Quaternion.identity, this._playerTransform);
-            _heartsInstances.Add(heart); 
-                                        
+            _heartsInstances.Add(heart);
         }
     }
 
@@ -158,6 +160,7 @@ public class Player
             UnityEngine.Object.Destroy(bullet, 5f);
         }
     }
+
     private void animatePlayer()
     {
         if (this._movementX != 0 || this._movementY != 0)
@@ -171,7 +174,6 @@ public class Player
             this._anim.speed = 0;
         }
     }
-
 
     private void FlipCharacter(bool faceRight)
     {

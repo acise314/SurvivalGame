@@ -1,26 +1,5 @@
 using UnityEngine;
 
-// Regulus Written
-public class rune
-{
-    private int _taken;
-
-    public rune(int taken)
-    {
-        this._taken = taken;
-    }
-
-    public int GetTaken()
-    {
-        return this._taken;
-    }
-
-    public void SetTaken(int newTaken)
-    {
-        this._taken = newTaken;
-    }
-}
-
 public class PowerUp : MonoBehaviour
 {
     public enum PowerUpType
@@ -34,8 +13,9 @@ public class PowerUp : MonoBehaviour
     private float _spawnProbability; // Spawn probability for the power-up
 
     // Encapsulated properties for power-ups taken
-    private static rune health = new rune(0);
-    private static rune damage = new rune(0);
+    private static rune healthRune = new rune("Health", 0, 5);
+    private static rune damageRune = new rune("Damage", 0, 5);
+    private static rune speedRune = new rune("Speed", 0, 1);
 
     // Constructor to set spawn probability
     public PowerUp(float spawnProbability)
@@ -61,20 +41,21 @@ public class PowerUp : MonoBehaviour
             switch (powerUpType)
             {
                 case PowerUpType.Health:
-                    health.SetTaken(health.GetTaken() + 1); // Increment health power-ups taken
-                    Debug.Log("Health Power-Ups Taken: " + health.GetTaken());
-                    // Implement health increase logic here
+                    healthRune.SetTaken(healthRune.GetTaken() + 1);
+                    Debug.Log($"Health Power-Up Taken: {healthRune.GetTaken()}");
+                    other.GetComponent<Player>().changeHealth(healthRune.GetIncrease()); // Add health
                     break;
 
                 case PowerUpType.Damage:
-                    damage.SetTaken(damage.GetTaken() + 1); // Increment damage power-ups taken
-                    Debug.Log("Damage Power-Ups Taken: " + damage.GetTaken());
-                    // Implement damage increase logic here
+                    damageRune.SetTaken(damageRune.GetTaken() + 1);
+                    Debug.Log($"Damage Power-Up Taken: {damageRune.GetTaken()}");
+                    other.GetComponent<Player>().changeDamage(damageRune.GetIncrease()); // Add damage
                     break;
 
                 case PowerUpType.Speed:
-                    // Implement speed increase logic here
-                    Debug.Log("Speed Power-Up Collected");
+                    speedRune.SetTaken(speedRune.GetTaken() + 1);
+                    Debug.Log($"Speed Power-Up Taken: {speedRune.GetTaken()}");
+                    other.GetComponent<Player>().changeSpeed(speedRune.GetIncrease()); // Add speed
                     break;
             }
 
