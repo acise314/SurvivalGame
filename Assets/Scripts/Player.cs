@@ -47,6 +47,7 @@ public class Player
         showHearts();
 
     }
+
     private void spin()
     {
         if (Input.GetKey(this._spinKeyClockwise))
@@ -121,6 +122,7 @@ public class Player
                                         
         }
     }
+    
 
     private void playerMoveKeyboard()
     {
@@ -152,6 +154,15 @@ public class Player
             UnityEngine.Object.Destroy(bullet, 5f);
         }
     }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemy"))
+        {
+            _health -= 1;
+        }
+    }
+
     private void animatePlayer()
     {
         if (this._movementX != 0 || this._movementY != 0)
