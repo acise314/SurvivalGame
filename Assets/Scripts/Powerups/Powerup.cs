@@ -1,68 +1,94 @@
 using UnityEngine;
 
-// Base PowerUp class
 public class PowerUp : MonoBehaviour
 {
-    private PowerUpEffect _effect; // Stores the effect of the power-up
-
-    // Constructor to set the effect
-    public void Initialize(PowerUpEffect effect)
+    public enum PowerUpType
     {
-        _effect = effect;
+        Health,
+        Damage,
+        Speed
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Player player = collision.GetComponent<Player>();
-        if (player != null)
-        {
-            // Apply the power-up effect to the player
-            _effect.ApplyEffect(player);
+    [SerializeField] private PowerUpType powerUpType; // The type of power-up
+    private float _spawnProbability; // Spawn probability for the power-up
 
-            // Destroy the power-up after it's used
+    // Encapsulated properties for power-ups taken
+    private static int _healthPowerUpsTaken;
+    private static int _damagePowerUpsTaken;
+    private static int _speedPowerUpsTaken;
+
+    // Constructor to set spawn probability
+    public PowerUp(float spawnProbability)
+    {
+        SetSpawnProbability(spawnProbability);
+    }
+
+    // Getter and Setter for spawn probability
+    public float GetSpawnProbability()
+    {
+        return _spawnProbability;
+    }
+
+    public void SetSpawnProbability(float spawnProbability)
+    {
+        _spawnProbability = spawnProbability;
+    }
+
+    // Properties for accessing the power-up counts
+    public int GetHealthPowerUpsTaken()
+    {
+        return _healthPowerUpsTaken;
+    }
+
+    protected void SetHealthPowerUpsTaken(int value)
+    {
+        _healthPowerUpsTaken = value;
+    }
+
+    public int GetDamagePowerUpsTaken()
+    {
+        return _damagePowerUpsTaken;
+    }
+
+    protected void SetDamagePowerUpsTaken(int value)
+    {
+        _damagePowerUpsTaken = value;
+    }
+
+    public int GetSpeedPowerUpsTaken()
+    {
+        return _speedPowerUpsTaken;
+    }
+
+    protected void SetSpeedPowerUpsTaken(int value)
+    {
+        _speedPowerUpsTaken = value;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            switch (powerUpType)
+            {
+                case PowerUpType.Health:
+                    SetHealthPowerUpsTaken(GetHealthPowerUpsTaken() + 1);
+                    // Implement health increase logic here
+                    break;
+
+                case PowerUpType.Damage:
+                    SetDamagePowerUpsTaken(GetDamagePowerUpsTaken() + 1);
+                    // Implement damage increase logic here
+                    break;
+
+                case PowerUpType.Speed:
+                    SetSpeedPowerUpsTaken(GetSpeedPowerUpsTaken() + 1);
+                    // Implement speed increase logic here
+                    break;
+            }
+
+            // Destroy the power-up after it has been collected
             Destroy(gameObject);
         }
-    }
-}
-
-// Interface for power-up effects
-public interface PowerUpEffect
-{
-    void ApplyEffect(Player player);
-}
-
-// HealthPowerUp class
-public class HealthPowerUp : PowerUpEffect
-{
-    private int _healthAmount;
-
-    public HealthPowerUp(int healthAmount)
-    {
-        _healthAmount = healthAmount;
-    }
-
-    public void ApplyEffect(Player player)
-    {
-        player.changeHealth(_healthAmount);
-        Debug.Log("Health increased by " + _healthAmount);
-    }
-}
-
-// DamagePowerUp class
-public class DamagePowerUp : PowerUpEffect
-{
-    private float _damageAmount;
-
-    public DamagePowerUp(float damageAmount)
-    {
-        _damageAmount = damageAmount;
-    }
-
-    public void ApplyEffect(Player player)
-    {
-        // Convert player damage to float before adding _damageAmount
-        float currentDamage = (float)player.GetDamage();
-        player.changeDamage(currentDamage + _damageAmount);
-        Debug.Log("Damage increased by " + _damageAmount);
     }
 }

@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class PowerUpManager : MonoBehaviour
 {
-    public GameObject powerUpPrefab; // A single prefab for all power-ups
-    public Transform playerTransform; // Reference to the player's position
+    public GameObject healthPowerUpPrefab;
+    public GameObject damagePowerUpPrefab;
+    public GameObject speedPowerUpPrefab;
 
-    private float spawnRadius = 5f;
-    private float spawnInterval = 10f;
+    public float spawnRadius = 10f; // Distance from player to spawn power-ups
+    public float spawnInterval = 5f; // Time between spawns
 
-    void Start()
+    private void Start()
     {
         StartCoroutine(SpawnPowerUps());
     }
@@ -19,29 +20,34 @@ public class PowerUpManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnInterval);
-            SpawnPowerUp();
+
+            // Randomly choose a power-up type to spawn
+            GameObject powerUpPrefab = ChooseRandomPowerUp();
+            Vector2 spawnPosition = (Vector2)transform.position + Random.insideUnitCircle * spawnRadius;
+
+            Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
         }
     }
 
-    private void SpawnPowerUp()
+    private GameObject ChooseRandomPowerUp()
     {
-        Vector2 spawnPosition = (Vector2)playerTransform.position + Random.insideUnitCircle * spawnRadius;
-        GameObject newPowerUp = Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
+        float healthSpawnChance = 0.45f; // 45% chance for health
+        float damageSpawnChance = 0.45f; // 45% chance for damage
+        float speedSpawnChance = 0.10f; // 10% chance for speed (rarer)
 
-        // Randomly choose between Health or Damage power-up
-        PowerUpEffect powerUpEffect;
-        if (Random.Range(0, 2) == 0)
+        float randomValue = Random.Range(0f, 1f);
+        if (randomValue < healthSpawnChance)
         {
-            powerUpEffect = new HealthPowerUp(5); // Increase health by 5
-            Debug.Log("Spawning Health PowerUp");
+            return healthPowerUpPrefab;
+        }
+        else if (randomValue < healthSpawnChance + damageSpawnChance)
+        {
+            return damagePowerUpPrefab;
         }
         else
         {
-            powerUpEffect = new DamagePowerUp(5f); // Increase damage by 5
-            Debug.Log("Spawning Damage PowerUp");
+            return speedPowerUpPrefab;
         }
-
-        // Initialize the spawned power-up with the selected effect
-        newPowerUp.GetComponent<PowerUp>().Initialize(powerUpEffect);
     }
 }
+   
