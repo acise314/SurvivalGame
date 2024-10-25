@@ -1,36 +1,24 @@
 using UnityEngine;
 
-public class Powerup : MonoBehaviour
+public class PowerUp : MonoBehaviour
 {
-    public enum PowerupType { Health, Damage }
-    public PowerupType powerupType;
+    public enum Type { Health, Damage }
+    public Type powerUpType; // Set this in the Inspector
 
-    private int healthAmount = 5;
-    private float damageAmount = 5f;
-
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("Player"))
+        Player player = collision.GetComponent<Player>();
+        if (player != null)
         {
-            Player player = other.GetComponent<Player>();
-            if (player != null)
+            if (powerUpType == Type.Health)
             {
-                ApplyPowerup(player);
-                Destroy(gameObject); // Destroy powerup after collection
+                player.changeHealth(5); // Increase health by 5
             }
-        }
-    }
-
-    private void ApplyPowerup(Player player)
-    {
-        switch (powerupType)
-        {
-            case PowerupType.Health:
-                player.changeHealth(healthAmount);
-                break;
-            case PowerupType.Damage:
-                player.changeDamage(damageAmount);
-                break;
+            else if (powerUpType == Type.Damage)
+            {
+                player.changeDamage((float)player.GetDamage() + 5); // Cast to float for damage
+            }
+            Destroy(gameObject); // Remove the power-up
         }
     }
 }
