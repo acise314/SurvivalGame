@@ -61,19 +61,20 @@ public class PowerUp : MonoBehaviour
             switch (powerUpType)
             {
                 case PowerUpType.Health:
-                    health.SetTaken(_taken.GetTaken() + 1);
-                    Debug.Log(health.GetTaken());
+                    health.SetTaken(health.GetTaken() + 1); // Increment health power-ups taken
+                    Debug.Log("Health Power-Ups Taken: " + health.GetTaken());
                     // Implement health increase logic here
                     break;
 
                 case PowerUpType.Damage:
-                    damage.SetTaken(_taken.GetTaken() + 1);
-                    Debug.Log(damage.GetTaken());
+                    damage.SetTaken(damage.GetTaken() + 1); // Increment damage power-ups taken
+                    Debug.Log("Damage Power-Ups Taken: " + damage.GetTaken());
                     // Implement damage increase logic here
                     break;
 
                 case PowerUpType.Speed:
                     // Implement speed increase logic here
+                    Debug.Log("Speed Power-Up Collected");
                     break;
             }
 
