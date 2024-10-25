@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PowerUpManager : MonoBehaviour
+public class PowerUpSpawner : MonoBehaviour
 {
     public GameObject healthPowerUpPrefab;
     public GameObject damagePowerUpPrefab;
@@ -50,4 +50,3 @@ public class PowerUpManager : MonoBehaviour
         }
     }
 }
-   

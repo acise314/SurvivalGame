@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Class for managing power-up counts
+// Regulus Written
 public class rune
 {
     private int _taken;
@@ -23,11 +23,6 @@ public class rune
 
 public class PowerUp : MonoBehaviour
 {
-    // Declare instances of rune for counting power-ups taken
-    private static rune health = new rune(0);
-    private static rune damage = new rune(0);
-    private static rune speed = new rune(0);
-
     public enum PowerUpType
     {
         Health,
@@ -37,6 +32,10 @@ public class PowerUp : MonoBehaviour
 
     [SerializeField] private PowerUpType powerUpType; // The type of power-up
     private float _spawnProbability; // Spawn probability for the power-up
+
+    // Encapsulated properties for power-ups taken
+    private static rune health = new rune(0);
+    private static rune damage = new rune(0);
 
     // Constructor to set spawn probability
     public PowerUp(float spawnProbability)
@@ -55,27 +54,25 @@ public class PowerUp : MonoBehaviour
         _spawnProbability = spawnProbability;
     }
 
-    // OnTriggerEnter2D method to handle power-up collection
-    public void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             switch (powerUpType)
             {
                 case PowerUpType.Health:
-                    health.SetTaken(health.GetTaken() + 1); // Increment health power-ups taken
-                    // Implement health increase logic here
+                    health.SetTaken(_taken.GetTaken() + 1);
                     Debug.Log(health.GetTaken());
+                    // Implement health increase logic here
                     break;
 
                 case PowerUpType.Damage:
-                    damage.SetTaken(damage.GetTaken() + 1); // Increment damage power-ups taken
-                    // Implement damage increase logic here
+                    damage.SetTaken(_taken.GetTaken() + 1);
                     Debug.Log(damage.GetTaken());
+                    // Implement damage increase logic here
                     break;
 
                 case PowerUpType.Speed:
-                    speed.SetTaken(speed.GetTaken() + 1); // Increment speed power-ups taken
                     // Implement speed increase logic here
                     break;
             }
